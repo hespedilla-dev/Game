@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rooms of Mysteria</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- ================================================================
+         SCREEN 1: START SCREEN
+         ================================================================ -->
+    <section
+      id="start-screen"
+      class="screen screen--active"
+      aria-labelledby="game-title"
+    >
+      <div class="start-card">
+        <p class="start-kicker">
+          Trinity Studios presents
+        </p>
+
+        <h1 id="game-title" class="start-title">Rooms of Mysteria</h1>
+
+        <p class="start-subtitle">
+          Locked inside the museum after hours, you must explore the
+          <strong>Zoology Hall</strong>, <strong>Arts Gallery</strong>, and
+          <strong>Astronomy Dome</strong>. Items discovered in each room unlock
+          the seals of the others before the 5-minute security lockdown engages.
+        </p>
+
+        <!-- Game overview -->
+        <div class="start-metrics" aria-label="Game overview">
+          <div class="metric-item">
+            <span class="metric-label">Best Score</span>
+            <strong id="start-high-score" class="metric-value tabular-nums">
+              0 pts
+            </strong>
+          </div>
+
+          <span class="metric-divider" aria-hidden="true">/</span>
+
+          <div class="metric-item">
+            <span class="metric-label">Rooms</span>
+            <strong class="metric-value tabular-nums"> 3 Chambers </strong>
+          </div>
+
+          <span class="metric-divider" aria-hidden="true">/</span>
+
+          <div class="metric-item">
+            <span class="metric-label">Time Limit</span>
+            <strong class="metric-value tabular-nums"> 5:00 </strong>
+          </div>
+        </div>
+
+        <!-- Start actions -->
+        <div class="start-actions">
+          <button id="btn-start-game" type="button" class="btn btn--primary">
+            Start Escape
+          </button>
+
+          <button
+            id="btn-open-instructions"
+            type="button"
+            class="btn btn--secondary"
+          >
+            How to Play
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         SCREEN 2: ACTIVE GAMEPLAY
+         ================================================================ -->
+    <main id="game-screen" class="screen game-layout" aria-hidden="true">
+      <!-- HUD -->
+      <header class="hud-bar">
+        <div class="hud-brand">
+          <span class="hud-title">Rooms of Mysteria</span>
+
+          <span id="hud-seal-count" class="hud-seals tabular-nums">
+            0 / 3 Seals Open
+          </span>
+        </div>
+
+        <!-- Room navigation -->
+        <nav class="room-switcher" aria-label="Museum rooms">
+          <button
+            type="button"
+            class="room-tab room-tab--active"
+            data-room="zoology"
+            aria-pressed="true"
+          >
+            <span class="room-tab-num">1</span>
+            <span>Zoology</span>
+            <span
+              id="tab-status-zoology"
+              class="room-tab-status"
+              aria-label="Locked"
+            >
+              Locked
+            </span>
+          </button>
+
+          <button
+            type="button"
+            class="room-tab"
+            data-room="arts"
+            aria-pressed="false"
+          >
+            <span class="room-tab-num">2</span>
+            <span>Arts</span>
+            <span
+              id="tab-status-arts"
+              class="room-tab-status"
+              aria-label="Locked"
+            >
+              Locked
+            </span>
+          </button>
+
+          <button
+            type="button"
+            class="room-tab"
+            data-room="astronomy"
+            aria-pressed="false"
+          >
+            <span class="room-tab-num">3</span>
+            <span>Astronomy</span>
+            <span
+              id="tab-status-astronomy"
+              class="room-tab-status"
+              aria-label="Locked"
+            >
+              Locked
+            </span>
+          </button>
+        </nav>
+
+        <!-- Timer, score, and controls -->
+        <div class="hud-controls">
+          <div class="hud-stat">
+            <span class="hud-stat-label">Time</span>
+            <strong id="hud-timer" class="hud-stat-val tabular-nums">
+              5:00
+            </strong>
+          </div>
+
+          <div class="hud-stat">
+            <span class="hud-stat-label">Score</span>
+            <strong id="hud-score" class="hud-stat-val tabular-nums">
+              0
+            </strong>
+          </div>
+
+          <div class="hud-buttons">
+            <button
+              id="btn-hint"
+              type="button"
+              class="btn-icon"
+              title="Get Hint (H) · -50 pts"
+              aria-label="Get contextual hint"
+            >
+              Hint
+            </button>
+
+            <button
+              id="btn-help-ingame"
+              type="button"
+              class="btn-icon"
+              title="How to Play (I)"
+              aria-label="Open instructions"
+            >
+              Help
+            </button>
+
+            <button
+              id="btn-mute"
+              type="button"
+              class="btn-icon"
+              title="Toggle Sound (M)"
+              aria-label="Toggle sound effects"
+              aria-pressed="false"
+            >
+              Sound On
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main game stage -->
+      <div class="stage-wrapper">
+        <div class="scene-frame" id="scene-frame">
+          <!-- ==========================================================
+               ROOM 1: ZOOLOGY HALL
+               ========================================================== -->
+          <svg
+            id="room-zoology"
+            class="room-svg room-svg--active"
+            viewBox="0 0 960 540"
+            role="img"
+            aria-label="Zoology Hall interactive escape room"
+          >
+            <defs>
+              <linearGradient id="zoo-wall" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#142721" />
+                <stop offset="100%" stop-color="#0b1612" />
+              </linearGradient>
+
+              <linearGradient id="zoo-wood" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#5c3a21" />
+                <stop offset="100%" stop-color="#382212" />
+              </linearGradient>
+
+              <radialGradient id="zoo-lamp" cx="50%" cy="20%" r="60%">
+                <stop offset="0%" stop-color="#f5c96b" stop-opacity="0.22" />
+                <stop offset="100%" stop-color="#0b1612" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+
+            <!-- Background -->
+            <image
+              href="images/zoology bg.png"
+              x="0"
+              y="0"
+              width="960"
+              height="540"
+              preserveAspectRatio="xMidYMid slice"
+            />
+
+            <!-- Floor -->
+            <rect x="0" y="420" width="960" height="120" fill="#1b140f" />
+
+            <line
+              x1="0"
+              y1="420"
+              x2="960"
+              y2="420"
+              stroke="none"
+              stroke-width="3"
+            />
+
+            <!-- Wall panels -->
+            <rect
+              x="34"
+              y="34"
+              width="220"
+              height="360"
+              fill="none"
+              stroke="none"
+              stroke-width="2"
+            />
+
+            <rect
+              x="280"
+              y="34"
+              width="380"
+              height="220"
+              fill="none"
+              stroke="none"
+              stroke-width="2"
+            />
+
+            <!-- Overhead sconce -->
+            <path d="M450,0 L510,0 L495,38 L465,38 Z" fill="#8f6b32" />
+
+            <ellipse
+              cx="480"
+              cy="40"
+              rx="22"
+              ry="6"
+              fill="#ffd98a"
+              opacity="0.85"
+            />
+
+            <!-- Mahogany shelf -->
+            <rect
+              x="300"
+              y="182"
+              width="340"
+              height="16"
+              rx="2"
+              fill="url(#zoo-wood)"
+              stroke="#29170b"
+              stroke-width="2"
+            />
+
+            <rect x="320" y="198" width="14" height="22" fill="#382212" />
+
+            <rect x="606" y="198" width="14" height="22" fill="#382212" />
+
+            <!-- HOTSPOT: SPECIMEN JARS -->
+            <g
+              id="hs-zoo-jars"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Inspect three preserved specimen jars and brass plaque"
+              data-hotspot="zoo-jars"
+            >
+              <rect
+                x="326"
+                y="96"
+                width="60"
+                height="84"
+                rx="8"
+                fill="#1c3b32"
+                fill-opacity="0.7"
+                stroke="#9ac4b4"
+                stroke-width="2"
+              />
+
+              <rect
+                x="336"
+                y="88"
+                width="40"
+                height="10"
+                rx="2"
+                fill="#b38742"
+              />
+
+              <ellipse cx="356" cy="142" rx="14" ry="18" fill="#d4a553" />
+
+              <path
+                d="M342,134 L334,128 M342,142 L332,142 M342,150 L334,156 M370,134 L378,128 M370,142 L380,142 M370,150 L378,156"
+                stroke="#f0cd83"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+
+              <text
+                x="356"
+                y="174"
+                text-anchor="middle"
+                fill="#e6dfc8"
+                font-size="11"
+                font-family="JetBrains Mono, monospace"
+              >
+                I
+              </text>
+
+              <rect
+                x="404"
+                y="96"
+                width="60"
+                height="84"
+                rx="8"
+                fill="#1c3b32"
+                fill-opacity="0.7"
+                stroke="#9ac4b4"
+                stroke-width="2"
+              />
+
+              <rect
+                x="414"
+                y="88"
+                width="40"
+                height="10"
+                rx="2"
+                fill="#b38742"
+              />
+
+              <ellipse cx="434" cy="140" rx="13" ry="18" fill="#d9d1c3" />
+
+              <circle cx="430" cy="130" r="3" fill="#1b140f" />
+              <circle cx="438" cy="130" r="3" fill="#1b140f" />
+
+              <path
+                d="M419,138 Q410,148 422,154 M449,138 Q458,148 446,154"
+                stroke="#b5aa99"
+                stroke-width="2.5"
+                fill="none"
+              />
+
+              <text
+                x="434"
+                y="174"
+                text-anchor="middle"
+                fill="#e6dfc8"
+                font-size="11"
+                font-family="JetBrains Mono, monospace"
+              >
+                II
+              </text>
+
+              <rect
+                x="482"
+                y="96"
+                width="60"
+                height="84"
+                rx="8"
+                fill="#1c3b32"
+                fill-opacity="0.7"
+                stroke="#9ac4b4"
+                stroke-width="2"
+              />
+
+              <rect
+                x="492"
+                y="88"
+                width="40"
+                height="10"
+                rx="2"
+                fill="#b38742"
+              />
+
+              <path
+                d="M512,138 C496,120 490,134 504,142 C494,148 498,160 512,148 C526,160 530,148 520,142 C534,134 528,120 512,138 Z"
+                fill="#e07a38"
+                stroke="#1b140f"
+                stroke-width="1.5"
+              />
+
+              <text
+                x="512"
+                y="174"
+                text-anchor="middle"
+                fill="#e6dfc8"
+                font-size="11"
+                font-family="JetBrains Mono, monospace"
+              >
+                III
+              </text>
+
+              <rect
+                x="372"
+                y="54"
+                width="128"
+                height="24"
+                rx="3"
+                fill="#b38742"
+                stroke="#f0cd83"
+                stroke-width="1"
+              />
+
+              <text
+                x="436"
+                y="70"
+                text-anchor="middle"
+                fill="#1b140f"
+                font-size="11"
+                font-weight="700"
+                font-family="Plus Jakarta Sans, sans-serif"
+              >
+                SPECIMEN COUNTS
+              </text>
+            </g>
+
+            <!-- HOTSPOT: PEACOCK FEATHER BRUSH -->
+            <g
+              id="hs-zoo-brush"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Pick up Peacock Feather Brush from shelf"
+              data-hotspot="zoo-brush"
+            >
+              <rect x="556" y="128" width="70" height="54" fill="transparent" />
+
+              <path
+                d="M564,176 L608,136"
+                stroke="#c89d54"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+
+              <ellipse
+                cx="612"
+                cy="132"
+                rx="14"
+                ry="9"
+                transform="rotate(-38 612 132)"
+                fill="#1d8f7d"
+                stroke="#8de0c8"
+                stroke-width="1.5"
+              />
+
+              <circle cx="614" cy="130" r="4" fill="#23418f" />
+            </g>
+
+            <!-- HOTSPOT: GLASS HABITAT TERRARIUM -->
+            <g
+              id="hs-zoo-terrarium"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Inspect Glass Habitat Terrarium"
+              data-hotspot="zoo-terrarium"
+            >
+              <rect
+                x="74"
+                y="290"
+                width="150"
+                height="144"
+                rx="3"
+                fill="url(#zoo-wood)"
+                stroke="#26160b"
+                stroke-width="2"
+              />
+
+              <rect
+                x="88"
+                y="306"
+                width="122"
+                height="112"
+                fill="none"
+                stroke="#855a36"
+                stroke-width="1.5"
+              />
+
+              <rect
+                x="82"
+                y="138"
+                width="134"
+                height="152"
+                rx="6"
+                fill="#132e27"
+                fill-opacity="0.85"
+                stroke="#9ec4b7"
+                stroke-width="3"
+              />
+
+              <path
+                d="M84,262 Q122,248 152,262 T214,258 L214,288 L84,288 Z"
+                fill="#2d4c2b"
+              />
+
+              <path
+                d="M115,260 C105,230 120,205 130,225 C140,195 162,210 152,255"
+                fill="none"
+                stroke="#5ca36c"
+                stroke-width="3.5"
+                stroke-linecap="round"
+              />
+
+              <g id="zoo-terrarium-oil">
+                <rect
+                  x="160"
+                  y="242"
+                  width="22"
+                  height="28"
+                  rx="5"
+                  fill="#e5a93b"
+                  stroke="#fff2cc"
+                  stroke-width="1.5"
+                />
+
+                <rect x="167" y="234" width="8" height="8" fill="#b38742" />
+              </g>
+
+              <rect
+                x="122"
+                y="274"
+                width="54"
+                height="16"
+                rx="3"
+                fill="#b38742"
+              />
+
+              <text
+                x="149"
+                y="285"
+                text-anchor="middle"
+                fill="#1b140f"
+                font-size="9.5"
+                font-weight="700"
+              >
+                HABITAT
+              </text>
+            </g>
+
+            <!-- HOTSPOT: NATURALIST LEDGER -->
+            <g
+              id="hs-zoo-ledger"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Read Naturalist Field Ledger on desk"
+              data-hotspot="zoo-ledger"
+            >
+              <rect
+                x="284"
+                y="294"
+                width="372"
+                height="18"
+                rx="3"
+                fill="url(#zoo-wood)"
+                stroke="#29170b"
+                stroke-width="2"
+              />
+
+              <rect x="302" y="312" width="24" height="126" fill="#3a2313" />
+              <rect x="614" y="312" width="24" height="126" fill="#3a2313" />
+
+              <path
+                d="M350,276 L418,270 L418,294 L350,294 Z"
+                fill="#eee5cf"
+                stroke="#85755a"
+                stroke-width="1.5"
+              />
+
+              <path
+                d="M418,270 L486,276 L486,294 L418,294 Z"
+                fill="#f7f0de"
+                stroke="#85755a"
+                stroke-width="1.5"
+              />
+
+              <line
+                x1="364"
+                y1="280"
+                x2="404"
+                y2="278"
+                stroke="#6c5d47"
+                stroke-width="1.5"
+              />
+              <line
+                x1="364"
+                y1="286"
+                x2="404"
+                y2="284"
+                stroke="#6c5d47"
+                stroke-width="1.5"
+              />
+              <line
+                x1="432"
+                y1="278"
+                x2="472"
+                y2="280"
+                stroke="#6c5d47"
+                stroke-width="1.5"
+              />
+
+              <path
+                d="M558,294 L592,294 M575,294 L575,274 Q590,266 582,250 L570,236"
+                stroke="#d4a553"
+                stroke-width="5"
+                stroke-linecap="round"
+                fill="none"
+              />
+
+              <rect x="554" y="282" width="28" height="6" fill="#b38742" />
+            </g>
+
+            <!-- HOTSPOT: SPECIMEN DRAWER -->
+            <g
+              id="hs-zoo-drawer"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Open 3-digit Specimen Drawer Lock"
+              data-hotspot="zoo-drawer"
+            >
+              <rect
+                x="350"
+                y="312"
+                width="240"
+                height="92"
+                rx="3"
+                fill="#462b17"
+                stroke="#241409"
+                stroke-width="2"
+              />
+
+              <rect
+                x="366"
+                y="324"
+                width="208"
+                height="68"
+                rx="3"
+                fill="#59371e"
+                stroke="#8f633d"
+                stroke-width="1.5"
+              />
+
+              <rect
+                x="424"
+                y="340"
+                width="92"
+                height="36"
+                rx="4"
+                fill="#1b140f"
+                stroke="#d4a553"
+                stroke-width="2"
+              />
+
+              <text
+                id="zoo-drawer-code-label"
+                x="470"
+                y="364"
+                text-anchor="middle"
+                fill="#f0cd83"
+                font-size="17"
+                font-weight="700"
+                font-family="JetBrains Mono, monospace"
+              >
+                0 - 0 - 0
+              </text>
+            </g>
+
+            <!-- HOTSPOT: ZOOLOGY EXIT SEAL -->
+            <g
+              id="hs-zoo-exit-seal"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Inspect Zoology Amber Beetle Exit Seal"
+              data-hotspot="zoo-exit-seal"
+            >
+              <rect
+                x="708"
+                y="88"
+                width="194"
+                height="346"
+                rx="97"
+                fill="#233e34"
+                stroke="#b38742"
+                stroke-width="6"
+              />
+
+              <rect
+                x="726"
+                y="108"
+                width="158"
+                height="320"
+                rx="79"
+                fill="#172b23"
+                stroke="#5e4621"
+                stroke-width="2"
+              />
+
+              <circle
+                cx="805"
+                cy="242"
+                r="46"
+                fill="#8c5416"
+                stroke="#f0cd83"
+                stroke-width="3"
+              />
+
+              <ellipse cx="805" cy="242" rx="16" ry="22" fill="#e59a32" />
+
+              <path
+                d="M789,236 L776,228 M789,248 L776,256 M821,236 L834,228 M821,248 L834,256"
+                stroke="#ffdf99"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              />
+
+              <rect
+                x="748"
+                y="304"
+                width="114"
+                height="26"
+                rx="4"
+                fill="#14181f"
+                stroke="#b38742"
+                stroke-width="1.5"
+              />
+
+              <text
+                id="zoo-seal-status-svg"
+                x="805"
+                y="321"
+                text-anchor="middle"
+                fill="#f0cd83"
+                font-size="11"
+                font-weight="700"
+              >
+                SEAL LOCKED
+              </text>
+            </g>
+          </svg>
+
+          <!-- ==========================================================
+               ROOM 2: ARTS GALLERY
+               ========================================================== -->
+          <svg
+            id="room-arts"
+            class="room-svg"
+            viewBox="0 0 960 540"
+            role="img"
+            aria-label="Arts Gallery interactive escape room"
+          >
+            <defs>
+              <linearGradient id="arts-wall" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2b1922" />
+                <stop offset="100%" stop-color="#170d12" />
+              </linearGradient>
+
+              <radialGradient id="arts-spot" cx="42%" cy="22%" r="55%">
+                <stop offset="0%" stop-color="#f7dfb0" stop-opacity="0.2" />
+                <stop offset="100%" stop-color="#170d12" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+
+            <!-- Gallery background -->
+            <image
+              href="images/art bg.png"
+              x="0"
+              y="0"
+              width="960"
+              height="540"
+              preserveAspectRatio="xMidYMid slice"
+            />
+
+            <!-- HOTSPOT: TRIPTYCH FRAMES -->
+            <g
+              id="hs-arts-frames"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Inspect Triptych Gallery Frames"
+              data-hotspot="arts-frames"
+            >
+              <rect
+                x="74"
+                y="64"
+                width="94"
+                height="122"
+                fill="#211618"
+                stroke="#d4a553"
+                stroke-width="5"
+              />
+
+              <circle cx="121" cy="125" r="24" fill="#9827F5" />
+
+              <rect
+                x="188"
+                y="64"
+                width="94"
+                height="122"
+                fill="#211618"
+                stroke="#d4a553"
+                stroke-width="5"
+              />
+
+              <polygon points="235,96 263,150 207,150" fill="#ee9f27" />
+
+              <rect
+                x="302"
+                y="64"
+                width="94"
+                height="122"
+                fill="#211618"
+                stroke="#d4a553"
+                stroke-width="5"
+              />
+
+              <rect x="20" y="10" width="0" height="0" />
+
+              <rect x="325" y="102" width="48" height="48" fill="#ff8da1" />
+            </g>
+
+            <!-- HOTSPOT: DUSTY CANVAS -->
+            <g
+              id="hs-arts-easel"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Inspect Dusty Canvas on Painter's Easel"
+              data-hotspot="arts-easel"
+            >
+              <line
+                x1="210"
+                y1="196"
+                x2="152"
+                y2="438"
+                stroke="#754c29"
+                stroke-width="10"
+                stroke-linecap="round"
+              />
+
+              <line
+                x1="210"
+                y1="196"
+                x2="268"
+                y2="438"
+                stroke="#754c29"
+                stroke-width="10"
+                stroke-linecap="round"
+              />
+
+              <line
+                x1="210"
+                y1="184"
+                x2="210"
+                y2="412"
+                stroke="#59371b"
+                stroke-width="9"
+                stroke-linecap="round"
+              />
+
+              <rect
+                x="132"
+                y="346"
+                width="156"
+                height="14"
+                rx="2"
+                fill="#8a5a32"
+              />
+
+              <rect
+                x="142"
+                y="210"
+                width="136"
+                height="136"
+                rx="2"
+                fill="#efe6d0"
+                stroke="#5e3e22"
+                stroke-width="4"
+              />
+
+              <g id="arts-canvas-reveal">
+                <rect
+                  x="160"
+                  y="232"
+                  width="100"
+                  height="22"
+                  rx="4"
+                  fill="#c93b42"
+                />
+                <rect
+                  x="160"
+                  y="266"
+                  width="100"
+                  height="22"
+                  rx="4"
+                  fill="#e5a530"
+                />
+                <rect
+                  x="160"
+                  y="300"
+                  width="100"
+                  height="22"
+                  rx="4"
+                  fill="#2e67ba"
+                />
+              </g>
+
+              <g id="arts-canvas-dust">
+                <rect x="144" y="212" width="132" height="132" fill="#706861" />
+
+                <path
+                  d="M164,254 Q210,236 256,262 M158,288 Q214,310 260,282 M168,318 Q210,330 250,316"
+                  stroke="#998f86"
+                  stroke-width="4"
+                  fill="none"
+                  stroke-linecap="round"
+                />
+
+                <text
+                  x="210"
+                  y="280"
+                  text-anchor="middle"
+                  fill="#ded7ce"
+                  font-size="12"
+                  font-weight="700"
+                >
+                  DUST VEIL
+                </text>
+              </g>
+            </g>
+
+            <!-- HOTSPOT: MARBLE BUST -->
+            <g
+              id="hs-arts-bust"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Inspect Marble Bust of Urania and inscription"
+              data-hotspot="arts-bust"
+            >
+              <rect
+                x="352"
+                y="294"
+                width="96"
+                height="142"
+                rx="2"
+                fill="#cfd3d9"
+                stroke="#8b929e"
+                stroke-width="2"
+              />
+
+              <line
+                x1="370"
+                y1="306"
+                x2="370"
+                y2="424"
+                stroke="#a6adb8"
+                stroke-width="2"
+              />
+              <line
+                x1="400"
+                y1="306"
+                x2="400"
+                y2="424"
+                stroke="#a6adb8"
+                stroke-width="2"
+              />
+              <line
+                x1="430"
+                y1="306"
+                x2="430"
+                y2="424"
+                stroke="#a6adb8"
+                stroke-width="2"
+              />
+
+              <path
+                d="M364,294 Q400,268 436,294 Z"
+                fill="#e6e9ed"
+                stroke="#9aa1ad"
+                stroke-width="1.5"
+              />
+
+              <ellipse
+                cx="400"
+                cy="242"
+                rx="22"
+                ry="28"
+                fill="#eceff2"
+                stroke="#9aa1ad"
+                stroke-width="1.5"
+              />
+
+              <path
+                d="M380,230 Q400,206 420,230"
+                fill="#d5dae0"
+                stroke="#9aa1ad"
+                stroke-width="1.5"
+              />
+
+              <rect
+                x="366"
+                y="346"
+                width="68"
+                height="22"
+                rx="3"
+                fill="#b38742"
+              />
+
+              <text
+                x="400"
+                y="361"
+                text-anchor="middle"
+                fill="#1b140f"
+                font-size="9.5"
+                font-weight="700"
+              >
+                URANIA
+              </text>
+            </g>
+
+            <!-- HOTSPOT: PAINT CHEST -->
+            <g
+              id="hs-arts-paint-chest"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Open Chromatic Paint Chest Lock"
+              data-hotspot="arts-paint-chest"
+            >
+              <rect
+                x="492"
+                y="328"
+                width="188"
+                height="16"
+                rx="2"
+                fill="#633c20"
+                stroke="#2d190b"
+                stroke-width="2"
+              />
+
+              <rect x="506" y="344" width="18" height="92" fill="#472a15" />
+              <rect x="646" y="344" width="18" height="92" fill="#472a15" />
+
+              <rect
+                x="518"
+                y="246"
+                width="136"
+                height="82"
+                rx="4"
+                fill="#3a2029"
+                stroke="#d4a553"
+                stroke-width="2.5"
+              />
+
+              <line
+                x1="518"
+                y1="274"
+                x2="654"
+                y2="274"
+                stroke="#d4a553"
+                stroke-width="2"
+              />
+
+              <circle
+                id="arts-chest-dot-1"
+                cx="552"
+                cy="298"
+                r="11"
+                fill="#6e6568"
+                stroke="#f0cd83"
+                stroke-width="1.5"
+              />
+
+              <circle
+                id="arts-chest-dot-2"
+                cx="586"
+                cy="298"
+                r="11"
+                fill="#6e6568"
+                stroke="#f0cd83"
+                stroke-width="1.5"
+              />
+
+              <circle
+                id="arts-chest-dot-3"
+                cx="620"
+                cy="298"
+                r="11"
+                fill="#6e6568"
+                stroke="#f0cd83"
+                stroke-width="1.5"
+              />
+            </g>
+
+            <!-- HOTSPOT: ARTS EXIT SEAL -->
+            <g
+              id="hs-arts-exit-seal"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Inspect Arts Chromatic Mosaic Exit Seal"
+              data-hotspot="arts-exit-seal"
+            >
+              <rect
+                x="708"
+                y="88"
+                width="194"
+                height="346"
+                rx="97"
+                fill="#331d27"
+                stroke="#d4a553"
+                stroke-width="6"
+              />
+
+              <rect
+                x="726"
+                y="108"
+                width="158"
+                height="320"
+                rx="79"
+                fill="#211219"
+                stroke="#755528"
+                stroke-width="2"
+              />
+
+              <polygon
+                points="805,184 855,242 805,300 755,242"
+                fill="#4f2d3b"
+                stroke="#f0cd83"
+                stroke-width="3"
+              />
+
+              <circle
+                cx="805"
+                cy="222"
+                r="14"
+                fill="#1b1218"
+                stroke="#d4a553"
+                stroke-width="2"
+              />
+
+              <circle
+                cx="805"
+                cy="262"
+                r="14"
+                fill="#1b1218"
+                stroke="#d4a553"
+                stroke-width="2"
+              />
+
+              <rect
+                x="748"
+                y="304"
+                width="114"
+                height="26"
+                rx="4"
+                fill="#14181f"
+                stroke="#d4a553"
+                stroke-width="1.5"
+              />
+
+              <text
+                id="arts-seal-status-svg"
+                x="805"
+                y="321"
+                text-anchor="middle"
+                fill="#f0cd83"
+                font-size="11"
+                font-weight="700"
+              >
+                SEAL LOCKED
+              </text>
+            </g>
+          </svg>
+
+          <!-- ==========================================================
+               ROOM 3: ASTRONOMY DOME
+               ========================================================== -->
+          <svg
+            id="room-astronomy"
+            class="room-svg"
+            viewBox="0 0 960 540"
+            role="img"
+            aria-label="Astronomy Dome interactive escape room"
+          >
+            <defs>
+              <linearGradient id="astro-wall" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0b162e" />
+                <stop offset="100%" stop-color="#060c1a" />
+              </linearGradient>
+
+              <radialGradient id="astro-sky" cx="35%" cy="20%" r="55%">
+                <stop offset="0%" stop-color="#1c386e" stop-opacity="0.7" />
+
+                <stop offset="100%" stop-color="#060c1a" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+
+            <!-- Astronomy background -->
+            <image
+              href="images/astronomy bg.png"
+              x="0"
+              y="0"
+              width="960"
+              height="540"
+              preserveAspectRatio="xMidYMid slice"
+            />
+
+            <!-- Floor -->
+            <rect x="0" y="420" width="960" height="120" fill="#101829" />
+
+            <line
+              x1="0"
+              y1="420"
+              x2="960"
+              y2="420"
+              stroke="#2c3e61"
+              stroke-width="3"
+            />
+
+            <!-- HOTSPOT: STAR CONSOLE -->
+            <g
+              id="hs-astro-console"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Calibrate Star Dome Constellation Console"
+              data-hotspot="astro-console"
+            >
+              <line
+                x1="164"
+                y1="250"
+                x2="122"
+                y2="430"
+                stroke="#6b7b99"
+                stroke-width="9"
+                stroke-linecap="round"
+              />
+
+              <line
+                x1="164"
+                y1="250"
+                x2="212"
+                y2="430"
+                stroke="#6b7b99"
+                stroke-width="9"
+                stroke-linecap="round"
+              />
+
+              <g id="astro-telescope-tube" transform="rotate(-32 164 250)">
+                <rect
+                  x="86"
+                  y="234"
+                  width="180"
+                  height="28"
+                  rx="6"
+                  fill="#c99b44"
+                  stroke="#f2d68a"
+                  stroke-width="2"
+                />
+
+                <rect
+                  x="256"
+                  y="230"
+                  width="22"
+                  height="36"
+                  rx="3"
+                  fill="#70a7e8"
+                  stroke="#f2d68a"
+                  stroke-width="2"
+                />
+              </g>
+
+              <rect
+                x="248"
+                y="302"
+                width="134"
+                height="128"
+                rx="4"
+                fill="#15223d"
+                stroke="#c99b44"
+                stroke-width="2.5"
+              />
+
+              <rect
+                x="264"
+                y="318"
+                width="102"
+                height="58"
+                rx="3"
+                fill="#081224"
+                stroke="#5372ab"
+                stroke-width="1.5"
+              />
+
+              <circle cx="290" cy="346" r="4" fill="#f5d982" />
+              <circle cx="315" cy="336" r="4" fill="#f5d982" />
+              <circle cx="340" cy="352" r="4" fill="#f5d982" />
+
+              <path
+                d="M290,346 L315,336 L340,352"
+                stroke="#6999e0"
+                stroke-width="1.5"
+                fill="none"
+              />
+
+              <text
+                x="315"
+                y="404"
+                text-anchor="middle"
+                fill="#f0cd83"
+                font-size="11"
+                font-weight="700"
+              >
+                STAR CONSOLE
+              </text>
+            </g>
+
+            <!-- HOTSPOT: PLANETARY ORRERY -->
+            <g
+              id="hs-astro-orrery"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Inspect Broken Planetary Orrery"
+              data-hotspot="astro-orrery"
+            >
+              <rect
+                x="424"
+                y="304"
+                width="112"
+                height="130"
+                rx="3"
+                fill="#182745"
+                stroke="#c99b44"
+                stroke-width="2"
+              />
+
+              <circle
+                cx="480"
+                cy="238"
+                r="54"
+                fill="none"
+                stroke="#c99b44"
+                stroke-width="4"
+              />
+
+              <ellipse
+                cx="480"
+                cy="238"
+                rx="54"
+                ry="20"
+                fill="none"
+                stroke="#e8c374"
+                stroke-width="2.5"
+              />
+
+              <circle
+                id="astro-orrery-core"
+                cx="480"
+                cy="238"
+                r="14"
+                fill="#2c3a57"
+                stroke="#f0cd83"
+                stroke-width="2"
+                stroke-dasharray="4 3"
+              />
+
+              <circle cx="526" cy="220" r="8" fill="#5e9ce6" />
+
+              <rect
+                x="444"
+                y="346"
+                width="72"
+                height="24"
+                rx="3"
+                fill="#091224"
+                stroke="#c99b44"
+                stroke-width="1.5"
+              />
+
+              <text
+                id="astro-orrery-label"
+                x="480"
+                y="362"
+                text-anchor="middle"
+                fill="#f0cd83"
+                font-size="10"
+                font-weight="700"
+              >
+                NEEDS GEAR
+              </text>
+            </g>
+
+            <!-- HOTSPOT: ASTRONOMER'S DESK -->
+            <g
+              id="hs-astro-desk"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Read Astronomer's Chalkboard Notes"
+              data-hotspot="astro-desk"
+            >
+              <rect
+                x="574"
+                y="138"
+                width="110"
+                height="132"
+                rx="3"
+                fill="#162925"
+                stroke="#8f6b32"
+                stroke-width="5"
+              />
+
+              <circle
+                cx="629"
+                cy="186"
+                r="22"
+                fill="none"
+                stroke="#dce4ed"
+                stroke-width="1.5"
+                stroke-dasharray="3 3"
+              />
+
+              <line
+                x1="592"
+                y1="226"
+                x2="664"
+                y2="226"
+                stroke="#dce4ed"
+                stroke-width="2"
+              />
+
+              <line
+                x1="592"
+                y1="242"
+                x2="648"
+                y2="242"
+                stroke="#dce4ed"
+                stroke-width="2"
+              />
+
+              <text
+                x="629"
+                y="162"
+                text-anchor="middle"
+                fill="#dce4ed"
+                font-size="9.5"
+                font-weight="700"
+              >
+                OBSERVATORY
+              </text>
+            </g>
+
+            <!-- HOTSPOT: ASTRONOMY EXIT SEAL -->
+            <g
+              id="hs-astro-exit-seal"
+              class="hotspot"
+              tabindex="0"
+              role="button"
+              aria-label="Inspect Astronomy Celestial Hatch Exit Seal"
+              data-hotspot="astro-exit-seal"
+            >
+              <rect
+                x="708"
+                y="88"
+                width="194"
+                height="346"
+                rx="97"
+                fill="#142342"
+                stroke="#d4a553"
+                stroke-width="6"
+              />
+
+              <rect
+                x="726"
+                y="108"
+                width="158"
+                height="320"
+                rx="79"
+                fill="#0b152b"
+                stroke="#4f6c9e"
+                stroke-width="2"
+              />
+
+              <circle
+                cx="805"
+                cy="242"
+                r="48"
+                fill="#182a4d"
+                stroke="#f0cd83"
+                stroke-width="3"
+              />
+
+              <circle
+                cx="805"
+                cy="242"
+                r="26"
+                fill="none"
+                stroke="#85a7de"
+                stroke-width="2"
+              />
+
+              <path
+                d="M805,194 L805,290 M757,242 L853,242"
+                stroke="#d4a553"
+                stroke-width="2"
+              />
+
+              <rect
+                x="748"
+                y="304"
+                width="114"
+                height="26"
+                rx="4"
+                fill="#070e1c"
+                stroke="#d4a553"
+                stroke-width="1.5"
+              />
+
+              <text
+                id="astro-seal-status-svg"
+                x="805"
+                y="321"
+                text-anchor="middle"
+                fill="#f0cd83"
+                font-size="11"
+                font-weight="700"
+              >
+                SEAL LOCKED
+              </text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Clue and feedback area -->
+        <div class="clue-bar" role="status" aria-live="polite">
+          <span class="clue-label">Mysteria's Log</span>
+
+          <p id="clue-text" class="clue-message">
+            Explore all three rooms. Click objects to inspect clues, collect
+            items, and solve interconnected locks.
+          </p>
+        </div>
+
+        <!-- Inventory -->
+        <section
+          class="inventory-dock"
+          id="inventory-dock"
+          aria-label="Player inventory"
+        >
+          <div class="inventory-header">
+            <h2 class="inventory-title">Collected Artifacts</h2>
+
+            <span id="active-item-banner" class="active-item-banner">
+              Select an item below, then click an object in any room to use it.
+            </span>
+          </div>
+
+          <div id="inventory-content" class="inventory-content">
+            <div
+              id="inventory-grid"
+              class="inventory-grid"
+              aria-label="Collected artifacts"
+            >
+              <!-- Populated dynamically by script.js -->
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ================================================================
+         MODAL 1: INSTRUCTIONS
+         ================================================================ -->
+    <div
+      id="modal-instructions"
+      class="modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="instructions-heading"
+      hidden
+    >
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 id="instructions-heading" class="modal-title">How to Play</h2>
+
+          <button
+            type="button"
+            class="modal-close"
+            data-close-modal="modal-instructions"
+            aria-label="Close instructions"
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="modal-body instructions-body">
+          <p>
+            You have <strong>5:00 minutes</strong> to unlock all three museum
+            wing seals—<strong>Zoology</strong>, <strong>Arts</strong>, and
+            <strong>Astronomy</strong>—before permanent lockdown.
+          </p>
+
+          <ul class="instructions-list">
+            <li>
+              <strong>Point &amp; Click (or Tap):</strong>
+              Click glowing objects inside each room to inspect clues, collect
+              artifacts, or open combination locks.
+            </li>
+
+            <li>
+              <strong>Cross-Room Artifacts:</strong>
+              Every room's Exit Seal requires
+              <strong>two unique items</strong> discovered in the
+              <em>other two rooms</em>. Switch wings anytime using the top tabs.
+            </li>
+
+            <li>
+              <strong>Using Items:</strong>
+              Click an item in your
+              <strong>Collected Artifacts</strong> bar to equip it, then click
+              the target object or Exit Seal in a room.
+            </li>
+
+            <li>
+              <strong>Keyboard Controls:</strong>
+              Press <kbd>1</kbd>, <kbd>2</kbd>, <kbd>3</kbd> (or
+              <kbd>←</kbd>/<kbd>→</kbd>) to switch rooms, <kbd>Tab</kbd> +
+              <kbd>Enter</kbd> to interact, <kbd>H</kbd> for a Hint (-50 pts),
+              <kbd>M</kbd> to mute audio, and <kbd>Esc</kbd> to close dialogs.
+            </li>
+
+            <li>
+              <strong>Scoring &amp; Penalties:</strong>
+              Earn points for items, puzzles, seals, and remaining time.
+              Incorrect lock guesses deduct
+              <strong>25 pts</strong> and <strong>15 seconds</strong>.
+            </li>
+          </ul>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn--primary"
+            data-close-modal="modal-instructions"
+          >
+            Got It
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================
+         MODAL 2: INTERACTIVE PUZZLE / SEAL DIALOG
+         ================================================================ -->
+    <div
+      id="modal-puzzle"
+      class="modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="puzzle-modal-title"
+      hidden
+    >
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 id="puzzle-modal-title" class="modal-title">Puzzle Lock</h2>
+
+          <button
+            type="button"
+            class="modal-close"
+            data-close-modal="modal-puzzle"
+            aria-label="Close puzzle dialog"
+          >
+            ×
+          </button>
+        </div>
+
+        <div id="puzzle-modal-body" class="modal-body">
+          <!-- Interactive puzzle controls rendered here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================
+         SCREEN 3: GAME OVER / VICTORY
+         ================================================================ -->
+    <section
+      id="gameover-screen"
+      class="screen"
+      aria-labelledby="gameover-title"
+      hidden
+    >
+      <div class="gameover-card">
+        <p id="gameover-kicker" class="start-kicker">Simulation Complete</p>
+
+        <h2 id="gameover-title" class="start-title">Escaped!</h2>
+
+        <p id="gameover-message" class="start-subtitle">
+          All three museum wing seals have been unlatched.
+        </p>
+
+        <!-- Final score summary -->
+        <div class="score-breakdown" aria-label="Final score summary">
+          <div class="score-row">
+            <span>Final Score</span>
+            <strong id="final-score" class="tabular-nums"> 0 pts </strong>
+          </div>
+
+          <div class="score-row">
+            <span>Best High Score</span>
+            <strong id="final-high-score" class="tabular-nums"> 0 pts </strong>
+          </div>
+
+          <div class="score-row">
+            <span>Wing Seals Unlocked</span>
+            <strong id="final-seals" class="tabular-nums"> 0 / 3 </strong>
+          </div>
+
+          <div class="score-row">
+            <span>Time Remaining</span>
+            <strong id="final-time" class="tabular-nums"> 00:00 </strong>
+          </div>
+
+          <div id="new-record-banner" class="new-record-note" hidden>
+            New Personal Best saved to this browser!
+          </div>
+        </div>
+
+        <!-- Replay actions -->
+        <div class="start-actions">
+          <button id="btn-play-again" type="button" class="btn btn--primary">
+            Play Again
+          </button>
+
+          <button id="btn-back-title" type="button" class="btn btn--secondary">
+            Main Menu
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         MOBILE LANDSCAPE ROTATION PROMPT
+         ================================================================ -->
+    <div id="rotate-prompt">
+      <div class="rotate-card">
+        <span class="rotate-icon" aria-hidden="true">📱</span>
+
+        <h2>Turn Your Device</h2>
+
+        <p>
+          Please rotate your phone horizontally to enter the Curator's Wing.
+        </p>
+
+        <span class="rotate-arrow" aria-hidden="true"> ↻ </span>
+      </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
