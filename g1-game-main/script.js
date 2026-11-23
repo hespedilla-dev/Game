@@ -1,29 +1,14 @@
-/**
- * ============================================================================
- * CURATOR'S WING: THREE-HALL ESCAPE — GAME ENGINE
- * ============================================================================
- * Pure vanilla JavaScript (ES2022) implementing:
- *  - Clean game state machine (TITLE -> PLAYING -> GAME_OVER)
- *  - Three interconnected point-and-click rooms (Zoology, Arts, Astronomy)
- *  - Cross-room item dependencies (every room's Exit Seal requires 2 items
- *    discovered in the OTHER two rooms)
- *  - Mouse, Touch, and Keyboard controls (1/2/3, Arrows, Tab/Enter, H, I, M, Esc)
- *  - Score system, countdown timer, penalties, and localStorage High Score
- *  - Web Audio API synthesized sound effects with mute toggle
- * ============================================================================
- */
-
 // ---------------------------------------------------------------------------
 // 1. CONSTANTS & STATIC GAME DEFINITIONS
 // ---------------------------------------------------------------------------
 
-const STORAGE_KEY = "curators_wing_high_score";
+const STORAGE_KEY = "mysterias_chamber_high_score";
 const INITIAL_TIME_SECONDS = 5 * 60; // 5 minutes
 const ROOM_ORDER = ["zoology", "arts", "astronomy"];
 
 /**
  * Catalog of all 9 collectible artifacts.
- * Each item originates in one wing and is used in another wing.
+ * Each item originates in one chamber and is used in another chamber.
  */
 const ITEM_CATALOG = {
   feather_brush: {
@@ -360,11 +345,10 @@ function addScore(points) {
   renderHud();
 }
 
-function applyPenalty(pointsPenalty = 25, secondsPenalty = 15) {
-  gameState.score = Math.max(0, gameState.score - pointsPenalty);
+function applyPenalty() {
   gameState.timeRemaining = Math.max(
     0,
-    gameState.timeRemaining - secondsPenalty,
+    gameState.timeRemaining - 30,
   );
   SoundFX.error();
   renderHud();
@@ -693,12 +677,12 @@ function finishGame(didWin) {
   ).length;
 
   dom.gameoverKicker.textContent = didWin
-    ? "All Chamber Seals Opened"
+    ? "All Exit Seals Opened"
     : "Lockdown Engaged";
-  dom.gameoverTitle.textContent = didWin ? "You Escaped!" : "Time Expired";
+  dom.gameoverTitle.textContent = didWin ? "You Escaped!" : "Trapped";
   dom.gameoverMessage.textContent = didWin
     ? `Brilliant deduction! You unlatched Zoology, Arts, and Astronomy with ${formatTime(gameState.timeRemaining)} to spare (including +${gameState.timeRemaining * 2} pts time bonus).`
-    : "The museum security shutters sealed before all three wing locks could be opened.";
+    : "The museum security shutters sealed before all three chamber locks could be opened.";
 
   dom.finalScore.textContent = `${gameState.score} pts`;
   dom.finalHighScore.textContent = `${bestScore} pts`;
@@ -932,9 +916,9 @@ function openZooDrawerPuzzle() {
             "success",
           );
         } else {
-          applyPenalty(25, 15);
+          applyPenalty();
           renderDrawerBody(
-            "Incorrect combination (-25 pts, -15s). Check the three jars on the shelf!",
+            "Incorrect combination (-30s). Check the three jars on the shelf!",
           );
         }
       });
@@ -1017,9 +1001,9 @@ function openZooTerrariumPuzzle() {
           "success",
         );
       } else {
-        applyPenalty(25, 15);
+        applyPenalty();
         document.getElementById("hab-feedback").textContent =
-          "Mismatch (-25 pts, -15s). Match each creature to its natural environment.";
+          "Mismatch (-30s). Match each creature to its natural environment.";
       }
     });
 
@@ -1101,9 +1085,9 @@ function openArtsChestPuzzle() {
             "success",
           );
         } else {
-          applyPenalty(25, 15);
+          applyPenalty();
           renderChestBody(
-            "Wrong color triad (-25 pts, -15s). Sweep the dusty easel canvas first!",
+            "Wrong color triad (-30s). Sweep the dusty easel canvas first!",
           );
         }
       });
@@ -1202,9 +1186,9 @@ function openAstroConsolePuzzle() {
             "success",
           );
         } else {
-          applyPenalty(25, 15);
+          applyPenalty();
           renderConsoleBody(
-            "Misaligned coordinates (-25 pts, -15s). Select the 3 beacons named in Arts.",
+            "Misaligned coordinates (-30s). Select the 3 beacons named in Arts.",
           );
         }
       });
@@ -1287,7 +1271,7 @@ function openSealModal(roomId) {
           <div class="seal-socket ${placed ? "seal-socket--filled" : ""}">
             <div class="seal-socket-info">
               <strong>${item.name}</strong>
-              <span>Found in ${item.origin} Wing</span>
+              <span>Found in ${item.origin} Chamber</span>
             </div>
             ${
               placed
