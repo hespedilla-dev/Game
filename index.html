@@ -8,12 +8,10 @@
   </head>
 
   <body>
-    <!-- ================================================================
-         SCREEN 1: START SCREEN
-         ================================================================ -->
+    <!-- SCREEN 1: START SCREEN -->
     <section
       id="start-screen"
-      class="screen screen--active"s
+      class="screen screen--active"
       aria-labelledby="game-title"
     >
       <div class="start-card">
@@ -71,9 +69,7 @@
       </div>
     </section>
 
-    <!-- ================================================================
-         SCREEN 2: ACTIVE GAMEPLAY
-         ================================================================ -->
+    <!-- SCREEN 2: ACTIVE GAMEPLAY -->
     <main id="game-screen" class="screen game-layout" aria-hidden="true">
       <!-- HUD -->
       <header class="hud-bar">
@@ -193,9 +189,7 @@
       <!-- Main game stage -->
       <div class="stage-wrapper">
         <div class="scene-frame" id="scene-frame">
-          <!-- ==========================================================
-               ROOM 1: ZOOLOGY HALL
-               ========================================================== -->
+          <!-- ROOM 1: ZOOLOGY HALL -->
           <svg
             id="room-zoology"
             class="room-svg room-svg--active"
@@ -774,9 +768,7 @@
             </g>
           </svg>
 
-          <!-- ==========================================================
-               ROOM 2: ARTS GALLERY
-               ========================================================== -->
+          <!-- ROOM 2: ARTS GALLERY -->
           <svg
             id="room-arts"
             class="room-svg"
@@ -1209,9 +1201,7 @@
             </g>
           </svg>
 
-          <!-- ==========================================================
-               ROOM 3: ASTRONOMY DOME
-               ========================================================== -->
+          <!-- ROOM 3: ASTRONOMY DOME -->
           <svg
             id="room-astronomy"
             class="room-svg"
@@ -1606,9 +1596,7 @@
       </div>
     </main>
 
-    <!-- ================================================================
-         MODAL 1: INSTRUCTIONS
-         ================================================================ -->
+    <!-- MODAL 1: INSTRUCTIONS -->
     <div
       id="modal-instructions"
       class="modal-backdrop"
@@ -1634,7 +1622,7 @@
         <div class="modal-body instructions-body">
           <p>
             You have <strong>5:00 minutes</strong> to unlock all three museum
-            wing seals—<strong>Zoology</strong>, <strong>Arts</strong>, and
+            chamber seals—<strong>Zoology</strong>, <strong>Arts</strong>, and
             <strong>Astronomy</strong>—before permanent lockdown.
           </p>
 
@@ -1649,7 +1637,7 @@
               <strong>Cross-Room Artifacts:</strong>
               Every room's Exit Seal requires
               <strong>two unique items</strong> discovered in the
-              <em>other two rooms</em>. Switch wings anytime using the top tabs.
+              <em>other two rooms</em>. Switch chambers anytime using the top tabs.
             </li>
 
             <li>
@@ -1671,7 +1659,7 @@
               <strong>Scoring &amp; Penalties:</strong>
               Earn points for items, puzzles, seals, and remaining time.
               Incorrect lock guesses deduct
-              <strong>25 pts</strong> and <strong>15 seconds</strong>.
+              <strong>30 seconds</strong>.
             </li>
           </ul>
         </div>
@@ -1688,9 +1676,7 @@
       </div>
     </div>
 
-    <!-- ================================================================
-         MODAL 2: INTERACTIVE PUZZLE / SEAL DIALOG
-         ================================================================ -->
+    <!-- MODAL 2: INTERACTIVE PUZZLE / SEAL DIALOG -->
     <div
       id="modal-puzzle"
       class="modal-backdrop"
@@ -1719,9 +1705,7 @@
       </div>
     </div>
 
-    <!-- ================================================================
-         SCREEN 3: GAME OVER / VICTORY
-         ================================================================ -->
+    <!-- SCREEN 3: GAME OVER / VICTORY -->
     <section
       id="gameover-screen"
       class="screen"
@@ -1734,7 +1718,7 @@
         <h2 id="gameover-title" class="start-title">Escaped!</h2>
 
         <p id="gameover-message" class="start-subtitle">
-          All three museum wing seals have been unlatched.
+          All three museum chamber seals have been unlatched.
         </p>
 
         <!-- Final score summary -->
@@ -1750,7 +1734,7 @@
           </div>
 
           <div class="score-row">
-            <span>Wing Seals Unlocked</span>
+            <span>Chamber Seals Unlocked</span>
             <strong id="final-seals" class="tabular-nums"> 0 / 3 </strong>
           </div>
 
@@ -1777,9 +1761,7 @@
       </div>
     </section>
 
-    <!-- ================================================================
-         MOBILE LANDSCAPE ROTATION PROMPT
-         ================================================================ -->
+    <!-- MOBILE LANDSCAPE ROTATION PROMPT -->
     <div id="rotate-prompt">
       <div class="rotate-card">
         <span class="rotate-icon" aria-hidden="true">📱</span>
@@ -1787,7 +1769,7 @@
         <h2>Turn Your Device</h2>
 
         <p>
-          Please rotate your phone horizontally to enter the Curator's Wing.
+          Please rotate your phone horizontally to enter the Mysteria's Chamber.
         </p>
 
         <span class="rotate-arrow" aria-hidden="true"> ↻ </span>
